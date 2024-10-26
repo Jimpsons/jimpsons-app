@@ -1,17 +1,19 @@
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import WalletProvider from "./context/WalletContext";
-import ConnectWalletButton from "./components/ui/ConnectWalletButton/ConnectWalletButton";
-import WalletInfo from "./components/ui/WalletInfo/WalletInfo";
+import NFTLandingPage from "./pages/Landing/Landing";
+import { Presale } from "./pages/Presale/Presale";
 
-const App: React.FC = () =>{
-
+const App: React.FC = () => {
   return (
-    <>
+    <Router>
       <WalletProvider>
-        <ConnectWalletButton/>
-        <WalletInfo/>
+        <Routes>
+          <Route path="/" element={<NFTLandingPage />} />
+          <Route path="/presale" element={<Presale />} />
+        </Routes>
       </WalletProvider>
-    </>
-  )
-}
+    </Router>
+  );
+};
 
-export default App
+export default App;

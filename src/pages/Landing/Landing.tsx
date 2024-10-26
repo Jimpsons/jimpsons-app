@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
 
 const NFTLandingPage: React.FC = () => {
@@ -108,9 +109,9 @@ const NFTLandingPage: React.FC = () => {
             <img src={Logo} alt="Jimpsons Logo" className="logo-image" />
             {/* <h1 className="logo-text">Jimpsons</h1> */}
           </div>
-          <button className="button button-primary-connect">
-            Connect Wallet
-          </button>
+          <Link to="/presale" className="button button-primary-connect">
+            Join Presale
+          </Link>
         </nav>
 
         {/* Hero Section */}
@@ -138,14 +139,20 @@ const NFTLandingPage: React.FC = () => {
               </div>
 
               <div className="hero-buttons floating-buttons">
-                <button className="button button-primary glowing-border">
+                <Link
+                  to="/presale"
+                  className="button button-primary glowing-border"
+                >
                   <span className="button-content">Join Presale Now</span>
                   <div className="button-glow"></div>
-                </button>
-                <button className="button button-outline pulse-border">
+                </Link>
+                <Link
+                  to="/whitepaper"
+                  className="button button-outline pulse-border"
+                >
                   <span className="button-content">Check Our Whitepaper</span>
                   <div className="button-particles"></div>
-                </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -234,7 +241,7 @@ const NFTLandingPage: React.FC = () => {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2024 Jimpsons. All rights reserved.</p>
+            <p>&copy; 2024 Propheshy Jimpsons. All rights reserved.</p>
           </div>
         </footer>
       </div>
