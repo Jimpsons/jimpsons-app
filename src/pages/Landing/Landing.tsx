@@ -1,91 +1,43 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
 
 const NFTLandingPage: React.FC = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // Check for mobile device
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Mouse movement handlers
-  const handleMouseMove = (e: React.MouseEvent) => {
-    // Update mouse position
+  // Mouse movement handlers for 3D effect
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
     setMousePosition({ x: e.clientX, y: e.clientY });
-
-    // Handle 3D effect
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
 
     const { left, top, width, height } = wrapper.getBoundingClientRect();
     const x = e.clientX - left;
     const y = e.clientY - top;
-
     const middleX = width / 2;
     const middleY = height / 2;
-
     const offsetX = ((x - middleX) / middleX) * 15;
     const offsetY = ((y - middleY) / middleY) * 15;
 
     wrapper.style.setProperty("--rotateX", `-${offsetY}deg`);
     wrapper.style.setProperty("--rotateY", `${offsetX}deg`);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
-    wrapper.style.setProperty("--rotateX", "0deg");
-    wrapper.style.setProperty("--rotateY", "0deg");
-  };
-
-  useEffect(() => {
-    const wrapper = document.querySelector(
-      ".perspective-wrapper"
-    ) as HTMLElement;
-    if (!wrapper) return;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const { left, top, width, height } = wrapper.getBoundingClientRect();
-      const x = e.clientX - left;
-      const y = e.clientY - top;
-
-      const middleX = width / 2;
-      const middleY = height / 2;
-
-      const offsetX = ((x - middleX) / middleX) * 15;
-      const offsetY = ((y - middleY) / middleY) * 15;
-
-      wrapper.style.setProperty("--rotateX", `-${offsetY}deg`);
-      wrapper.style.setProperty("--rotateY", `${offsetX}deg`);
-    };
-
-    const handleMouseLeave = () => {
+    if (wrapper) {
       wrapper.style.setProperty("--rotateX", "0deg");
       wrapper.style.setProperty("--rotateY", "0deg");
-    };
-
-    // Explicitly type the event listener
-    wrapper.addEventListener("mousemove", handleMouseMove as EventListener);
-    wrapper.addEventListener("mouseleave", handleMouseLeave);
-
-    return () => {
-      wrapper.removeEventListener(
-        "mousemove",
-        handleMouseMove as EventListener
-      );
-      wrapper.removeEventListener("mouseleave", handleMouseLeave);
-    };
+    }
   }, []);
 
   return (
@@ -107,11 +59,10 @@ const NFTLandingPage: React.FC = () => {
         <nav className="nav">
           <div className="logo">
             <img src={Logo} alt="Jimpsons Logo" className="logo-image" />
-            {/* <h1 className="logo-text">Jimpsons</h1> */}
           </div>
-          <Link to="/presale" className="button button-primary-connect">
-            Join Presale
-          </Link>
+          <button className="button button-primary-connect">
+            Connect Wallet
+          </button>
         </nav>
 
         {/* Hero Section */}
@@ -119,14 +70,11 @@ const NFTLandingPage: React.FC = () => {
           <div className="hero-content perspective-wrapper">
             <div className="hero-3d-container">
               <h2 className="hero-title glowing-text">
-                <span className="hero-title-char">J</span>
-                <span className="hero-title-char">i</span>
-                <span className="hero-title-char">m</span>
-                <span className="hero-title-char">p</span>
-                <span className="hero-title-char">s</span>
-                <span className="hero-title-char">o</span>
-                <span className="hero-title-char">n</span>
-                <span className="hero-title-char">s</span>
+                {"Jimpsons".split("").map((char, idx) => (
+                  <span key={idx} className="hero-title-char">
+                    {char}
+                  </span>
+                ))}
               </h2>
 
               <div className="hero-card">
@@ -134,7 +82,7 @@ const NFTLandingPage: React.FC = () => {
                   Providing a fine line between supply and demand with strict
                   checks and balance from our trusty AI friends. Helping small
                   and big artists alike, we strive to provide the best platform
-                  for everyone
+                  for everyone.
                 </p>
               </div>
 
@@ -144,40 +92,25 @@ const NFTLandingPage: React.FC = () => {
                   className="button button-primary glowing-border"
                 >
                   <span className="button-content">Join Presale Now</span>
-                  <div className="button-glow"></div>
                 </Link>
                 <Link
                   to="/whitepaper"
                   className="button button-outline pulse-border"
                 >
                   <span className="button-content">Check Our Whitepaper</span>
-                  <div className="button-particles"></div>
                 </Link>
               </div>
             </div>
           </div>
 
           <div className="nft-grid">
-            <div className="nft-item nft-item-1">
-              <div className="nft-content">
-                <span>SISTERS</span>
+            {["SISTERS", "BROTHERS", "MOTHER", "FATHER"].map((label, idx) => (
+              <div key={idx} className={`nft-item nft-item-${idx + 1}`}>
+                <div className="nft-content">
+                  {label && <span>{label}</span>}
+                </div>
               </div>
-            </div>
-            <div className="nft-item nft-item-2">
-              <div className="nft-content">
-                <div className="nft-circle" />
-              </div>
-            </div>
-            <div className="nft-item nft-item-3">
-              <div className="nft-content">
-                <div className="nft-mouth" />
-              </div>
-            </div>
-            <div className="nft-item nft-item-4">
-              <div className="nft-content">
-                <div className="nft-bubble" />
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
@@ -218,13 +151,13 @@ const NFTLandingPage: React.FC = () => {
               <h3>Quick Links</h3>
               <ul className="footer-links">
                 <li>
-                  <a href="#marketplace">Marketplace</a>
+                  <a href="#marketplace">Presale</a>
                 </li>
                 <li>
-                  <a href="#create">Create NFT</a>
+                  <a href="#community">Social Links</a>
                 </li>
                 <li>
-                  <a href="#community">Community</a>
+                  <a href="#create">Website(Building)</a>
                 </li>
               </ul>
             </div>

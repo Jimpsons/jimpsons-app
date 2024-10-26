@@ -893,3 +893,62 @@ body {
 a {
   text-decoration: none;
 }
+/* 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ----------white theme-----------------  */
+.wrapper {
+  position: relative;
+  min-height: 100vh;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 243, 209, 0.8) 0%,
+    #ffffff 100%
+  );
+}
+
+.hero-description,
+.feature-title {
+  color: rgb(107, 114, 128);
+}
+
+.newsletter-input {
+  border: 1px solid rgb(107, 114, 128);
+}
+
+.footer {
+  border-top: 1px solid rgba(251, 191, 36, 0.9);
+}
+
+.pulse-border > .button-content {
+  color: rgb(107, 114, 128);
+}
+
+.footer-column > p {
+  color: rgb(107, 114, 128);
+}
+
+.hero-3d-container:hover {
+  animation: none;
+}
+
+.hero-title {
+  gap: 1rem;
+}
+
+.hero-title {
+  color: #fbbf24;
+  opacity: 0.2;
+}
