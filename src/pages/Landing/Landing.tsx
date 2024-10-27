@@ -1,13 +1,33 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useContext,
+} from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
+import { WalletContext } from "../../context/WalletContext";
 
 const NFTLandingPage: React.FC = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const wrapperRef = useRef<HTMLDivElement>(null);
 
+  // Connect Wallet Concept
+  const walletContext = useContext(WalletContext);
+
+  // Check if walletContext is null
+  if (!walletContext) {
+    console.error("WalletContext not found");
+    // TODO: Show other fallback UI
+    return <div>Wallet context not available</div>;
+  }
+  const { connectWallet, handleDisconnect, publicKey, isConnected } =
+    walletContext;
+
   // Check for mobile device
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener("resize", checkMobile);
@@ -15,6 +35,7 @@ const NFTLandingPage: React.FC = () => {
   }, []);
 
   // Mouse movement handlers for 3D effect
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     setMousePosition({ x: e.clientX, y: e.clientY });
     const wrapper = wrapperRef.current;
@@ -32,6 +53,7 @@ const NFTLandingPage: React.FC = () => {
     wrapper.style.setProperty("--rotateY", `${offsetX}deg`);
   }, []);
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const handleMouseLeave = useCallback(() => {
     const wrapper = wrapperRef.current;
     if (wrapper) {
@@ -60,9 +82,24 @@ const NFTLandingPage: React.FC = () => {
           <div className="logo">
             <img src={Logo} alt="Jimpsons Logo" className="logo-image" />
           </div>
-          <button className="button button-primary-connect">
-            Connect Wallet
-          </button>
+          <div className="wallet-container">
+            {isConnected ? (
+              <p className="wallet-text">
+                {publicKey?.slice(0, 4)}...{publicKey?.slice(-4)}
+              </p>
+            ) : null}
+            <div className="button button-primary-connect">
+              {isConnected ? (
+                <button onClick={handleDisconnect} className="wallet-button">
+                  Disconnect Wallet
+                </button>
+              ) : (
+                <button onClick={connectWallet} className="wallet-button">
+                  Connect Wallet
+                </button>
+              )}
+            </div>
+          </div>
         </nav>
 
         {/* Hero Section */}

@@ -908,7 +908,7 @@ a {
 
 
 
-/* ----------white theme-----------------  */
+/* ----------white theme (Might need to change later) -----------------  */
 .wrapper {
   position: relative;
   min-height: 100vh;
@@ -951,4 +951,74 @@ a {
 .hero-title {
   color: #fbbf24;
   opacity: 0.2;
+}
+
+/* Connect wallet landing page design  */
+/* Container for wallet info */
+.wallet-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Public key text styling */
+.wallet-text {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--black);
+}
+
+/* Main connect/disconnect button styling */
+.button-primary-connect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(
+    90deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  color: var(--white);
+  border-radius: 9999px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Button hover effect */
+.button-primary-connect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.button-primary-connect:hover::before {
+  left: 100%;
+}
+
+/* Wallet button inner text and spacing */
+.wallet-button {
+  background: none;
+  color: inherit;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.wallet-button:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
